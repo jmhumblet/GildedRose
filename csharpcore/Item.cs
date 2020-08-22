@@ -86,40 +86,18 @@
 
         public virtual void UpdateQuality()
         {
-            if (Name != "Aged Brie")
+            if (Quality > 0)
             {
-                if (Quality > 0)
-                {
-                    Quality -= 1;
-                }
-            }
-            else
-            {
-                if (Quality < MAXIMUM_QUALITY)
-                {
-                    Quality += 1;
-                }
+                Quality -= 1;
             }
 
             SellIn = SellIn - 1;
             
             if (SellIn < 0)
             {
-                if (Name != "Aged Brie")
-                {
-                    if (Quality > 0)
-                    {
-                            
-                        Quality = Quality - 1;
-                            
-                    }
-                }
-                else
-                {
-                    if (Quality < MAXIMUM_QUALITY)
-                    {
-                        Quality = Quality + 1;
-                    }
+                if (Quality > 0)
+                {    
+                    Quality = Quality - 1;   
                 }
             }
         }
