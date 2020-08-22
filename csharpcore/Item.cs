@@ -17,7 +17,7 @@
     {
         public override void UpdateQuality()
         {
-            base.UpdateQuality();
+
         }
     }
 
@@ -35,10 +35,7 @@
             {
                 if (Quality > 0)
                 {
-                    if (Name != "Sulfuras, Hand of Ragnaros")
-                    {
-                        Quality -= 1;
-                    }
+                    Quality -= 1;
                 }
             }
             else
@@ -69,11 +66,8 @@
                 }
             }
 
-            if (Name != "Sulfuras, Hand of Ragnaros")
-            {
-                SellIn = SellIn - 1;
-            }
-
+            SellIn = SellIn - 1;
+            
             if (SellIn < 0)
             {
                 if (Name != "Aged Brie")
@@ -82,10 +76,9 @@
                     {
                         if (Quality > 0)
                         {
-                            if (Name != "Sulfuras, Hand of Ragnaros")
-                            {
-                                Quality = Quality - 1;
-                            }
+                            
+                            Quality = Quality - 1;
+                            
                         }
                     }
                     else
