@@ -2,6 +2,8 @@
 {
     public class Item
     {
+        private const int MAXIMUM_QUALITY = 50;
+
         public string Name { get; set; }
         public int SellIn { get; set; }
         public int Quality { get; set; }
@@ -22,22 +24,22 @@
                 {
                     if (Name != "Sulfuras, Hand of Ragnaros")
                     {
-                        Quality = Quality - 1;
+                        Quality -= 1;
                     }
                 }
             }
             else
             {
-                if (Quality < 50)
+                if (Quality < MAXIMUM_QUALITY)
                 {
-                    Quality = Quality + 1;
+                    Quality += 1;
 
                     if (Name == "Backstage passes to a TAFKAL80ETC concert")
                     {
 
                         if (SellIn < 6)
                         {
-                            if (Quality < 50)
+                            if (Quality < MAXIMUM_QUALITY)
                             {
                                 Quality = Quality + 1;
                             }
@@ -45,7 +47,7 @@
 
                         if (SellIn < 11)
                         {
-                            if (Quality < 50)
+                            if (Quality < MAXIMUM_QUALITY)
                             {
                                 Quality = Quality + 1;
                             }
@@ -80,7 +82,7 @@
                 }
                 else
                 {
-                    if (Quality < 50)
+                    if (Quality < MAXIMUM_QUALITY)
                     {
                         Quality = Quality + 1;
                     }
