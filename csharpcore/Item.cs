@@ -1,95 +1,80 @@
-﻿namespace csharpcore
+﻿using System;
+
+namespace csharpcore
 {
     public class ConjuredManaCake : Item
     {
-        protected override void InternalUpdateQuality()
+        public ConjuredManaCake() : base(new Decreasing(2))
         {
-            if (Quality > 0)
-            {
-                Quality -= 2;
-            }
+
         }
     }
 
     public class BackstagePass : Item
     {
-        protected override void InternalUpdateQuality()
+        public BackstagePass() : base (new EmotionalPeak())
         {
-            if (SellIn < 0)
-            {
-                Quality = 0;
-                return;
-            }
 
-            UpdateQualityUpToMaximum();
-            
-            if (SellIn < 11)
-            {
-                UpdateQualityUpToMaximum();
-            }
-            
-            if (SellIn < 6)
-            {
-                UpdateQualityUpToMaximum();
-            }            
-        }
-
-        private void UpdateQualityUpToMaximum()
-        {
-            if (Quality < MAXIMUM_QUALITY)
-            {
-                Quality += 1;
-            }
         }
     }
 
     public class Sulfuras : Item
     {
-        public Sulfuras(): base(new NeverExpiringStrategy())
+        public Sulfuras() : base(new NeverExpiringStrategy(), new Inalterable())
         {
-
-        }
-
-        protected override void InternalUpdateQuality()
-        {
-
+            MaximumQuality = 80;
         }
     }
 
     public class AgedBrie : Item
     {
-        protected override void InternalUpdateQuality()
+        public AgedBrie() : base (new Increasing())
         {
-            if (Quality < MAXIMUM_QUALITY)
-            {
-                Quality += 1;
-            }
+
         }
     }
 
     public class Item
     {
-        public Item() : this(new ExpiringStartegy())
+        public Item() : this(new ExpiringStartegy(), new Decreasing())
         {
 
         }
 
-        public Item(IExpirationStrategy expirationStrategy)
+        public Item(IQualityBehavior qualityBehavior) 
+            : this (new ExpiringStartegy(), qualityBehavior)
+        {
+
+        }
+
+        public Item(
+            IExpirationStrategy expirationStrategy,
+            IQualityBehavior qualityBehavior)
         {
             this.expirationStrategy = expirationStrategy;
+            this.qualityBehavior = qualityBehavior;
         }
 
-        protected const int MAXIMUM_QUALITY = 50;
+        protected int MaximumQuality = 50;
+        protected int MinimumQuality = 0;
+
         private readonly IExpirationStrategy expirationStrategy;
+        private readonly IQualityBehavior qualityBehavior;
+        private int quality;
 
         public string Name { get; set; }
         public int SellIn { get; set; }
-        public int Quality { get; set; }
+        public int Quality
+        {
+            get => quality;
+            set => quality = Math.Min(MaximumQuality,
+                Math.Max(MinimumQuality, value));
+        }
 
         public void UpdateQuality()
         {
             InternalUpdateQuality();
-            InternalUpdateExpiration();
+            UpdateExpiration();
 
             if (SellIn < 0)
             {
@@ -97,17 +82,14 @@
             }
         }
 
-        protected void InternalUpdateExpiration()
+        protected void UpdateExpiration()
         {
             SellIn = expirationStrategy.GetNextExpiration(SellIn);
         }
 
         protected virtual void InternalUpdateQuality()
         {
-            if (Quality > 0)
-            {
-                Quality -= 1;
-            }
+            Quality += qualityBehavior.CalculateQualityChange(SellIn);
         }
     }
 }
