@@ -5,11 +5,11 @@
         int CalculateQualityChange(int sellIn);
     }
 
-    public class Decreasing : IQualityBehavior
+    public class DecreasingQuality : IQualityBehavior
     {
         private readonly int rate;
 
-        public Decreasing(int rate = 1)
+        public DecreasingQuality(int rate = 1)
         {
             this.rate = rate;
         }

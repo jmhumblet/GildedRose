@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace csharpcore
+﻿namespace csharpcore
 {
     public class ConjuredManaCake : Item
     {
-        public ConjuredManaCake() : base(new Decreasing(2))
+        public ConjuredManaCake() : base(new DecreasingQuality(2))
         {
 
         }
@@ -20,9 +18,12 @@ namespace csharpcore
 
     public class Sulfuras : Item
     {
-        public Sulfuras() : base(new NeverExpiringStrategy(), new Inalterable())
+        public Sulfuras() : base(
+            new NeverExpiringStrategy(),
+            new Inalterable(), 
+            new Range(80))
         {
-            MaximumQuality = 80;
+
         }
     }
 
@@ -36,7 +37,9 @@ namespace csharpcore
 
     public class Item
     {
-        public Item() : this(new ExpiringStartegy(), new Decreasing())
+        public Item() : this(
+            new ExpiringStartegy(), 
+            new DecreasingQuality())
         {
 
         }
@@ -49,33 +52,31 @@ namespace csharpcore
 
         public Item(
             IExpirationStrategy expirationStrategy,
-            IQualityBehavior qualityBehavior)
+            IQualityBehavior qualityBehavior,
+            Range qualityRange = null)
         {
             this.expirationStrategy = expirationStrategy;
             this.qualityBehavior = qualityBehavior;
+            this.qualityRange = qualityRange ?? new Range(0, 50);
         }
-
-        protected int MaximumQuality = 50;
-        protected int MinimumQuality = 0;
 
         private readonly IExpirationStrategy expirationStrategy;
         private readonly IQualityBehavior qualityBehavior;
-        private int quality;
+        private readonly Range qualityRange;
+        private BoundedInt quality;
 
         public string Name { get; set; }
         public int SellIn { get; set; }
         public int Quality
         {
             get => quality;
-            set => quality = Math.Min(MaximumQuality,
-                Math.Max(MinimumQuality, value));
+            set => quality = new BoundedInt(qualityRange, value);
         }
 
         public void UpdateQuality()
         {
             UpdateExpiration();
             InternalUpdateQuality();
-            
         }
 
         protected void UpdateExpiration()
@@ -83,9 +84,9 @@ namespace csharpcore
             SellIn = expirationStrategy.GetNextExpiration(SellIn);
         }
 
-        protected virtual void InternalUpdateQuality()
+        protected void InternalUpdateQuality()
         {
-            Quality += qualityBehavior.CalculateQualityChange(SellIn);
+            quality += qualityBehavior.CalculateQualityChange(SellIn);
         }
     }
 }
