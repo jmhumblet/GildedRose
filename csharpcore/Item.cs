@@ -13,6 +13,14 @@
         }
     }
 
+    public class BackstagePass : Item
+    {
+        public override void UpdateQuality()
+        {
+            base.UpdateQuality();
+        }
+    }
+
     public class Sulfuras : Item
     {
         public override void UpdateQuality()
