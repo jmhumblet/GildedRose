@@ -55,6 +55,14 @@
         }
     }
 
+    public class AgedBrie : Item
+    {
+        public override void UpdateQuality()
+        {
+            base.UpdateQuality();
+        }
+    }
+
     public class Item
     {
         protected const int MAXIMUM_QUALITY = 50;
