@@ -45,12 +45,12 @@
 
     public class Sulfuras : Item
     {
-        protected override void InternalUpdateQuality()
+        public Sulfuras(): base(new NeverExpiringStrategy())
         {
 
         }
 
-        protected override void InternalUpdateExpiration()
+        protected override void InternalUpdateQuality()
         {
 
         }
@@ -69,7 +69,18 @@
 
     public class Item
     {
+        public Item() : this(new ExpiringStartegy())
+        {
+
+        }
+
+        public Item(IExpirationStrategy expirationStrategy)
+        {
+            this.expirationStrategy = expirationStrategy;
+        }
+
         protected const int MAXIMUM_QUALITY = 50;
+        private readonly IExpirationStrategy expirationStrategy;
 
         public string Name { get; set; }
         public int SellIn { get; set; }
@@ -86,9 +97,9 @@
             }
         }
 
-        protected virtual void InternalUpdateExpiration()
+        protected void InternalUpdateExpiration()
         {
-            SellIn = SellIn - 1;
+            SellIn = expirationStrategy.GetNextExpiration(SellIn);
         }
 
         protected virtual void InternalUpdateQuality()
