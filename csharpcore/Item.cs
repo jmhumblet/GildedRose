@@ -17,33 +17,32 @@
     {
         public override void UpdateQuality()
         {
-            
-            if (Quality < MAXIMUM_QUALITY)
+            UpdateQualityUpToMaximum();
+
+            if (SellIn < 6)
             {
-                Quality += 1;
-
-                if (SellIn < 6)
-                {
-                    if (Quality < MAXIMUM_QUALITY)
-                    {
-                        Quality = Quality + 1;
-                    }
-                }
-
-                if (SellIn < 11)
-                {
-                    if (Quality < MAXIMUM_QUALITY)
-                    {
-                        Quality = Quality + 1;
-                    }
-                }
+                UpdateQualityUpToMaximum();
             }
+
+            if (SellIn < 11)
+            {
+                UpdateQualityUpToMaximum();
+            }
+
 
             SellIn = SellIn - 1;
 
             if (SellIn < 0)
             {
                 Quality = 0;
+            }
+        }
+
+        private void UpdateQualityUpToMaximum()
+        {
+            if (Quality < MAXIMUM_QUALITY)
+            {
+                Quality += 1;
             }
         }
     }
