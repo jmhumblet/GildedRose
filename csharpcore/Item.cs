@@ -2,40 +2,36 @@
 {
     public class ConjuredManaCake : Item
     {
-        public override void UpdateQuality()
+        protected override void InternalUpdateQuality()
         {
             if (Quality > 0)
             {
-                Quality--;
+                Quality -= 2;
             }
-
-            base.UpdateQuality();
         }
     }
 
     public class BackstagePass : Item
     {
-        public override void UpdateQuality()
+        protected override void InternalUpdateQuality()
         {
-            UpdateQualityUpToMaximum();
-
-            if (SellIn < 6)
+            if (SellIn < 0)
             {
-                UpdateQualityUpToMaximum();
+                Quality = 0;
+                return;
             }
 
+            UpdateQualityUpToMaximum();
+            
             if (SellIn < 11)
             {
                 UpdateQualityUpToMaximum();
             }
-
-
-            SellIn = SellIn - 1;
-
-            if (SellIn < 0)
+            
+            if (SellIn < 6)
             {
-                Quality = 0;
-            }
+                UpdateQualityUpToMaximum();
+            }            
         }
 
         private void UpdateQualityUpToMaximum()
@@ -49,7 +45,12 @@
 
     public class Sulfuras : Item
     {
-        public override void UpdateQuality()
+        protected override void InternalUpdateQuality()
+        {
+
+        }
+
+        protected override void InternalUpdateExpiration()
         {
 
         }
@@ -57,21 +58,11 @@
 
     public class AgedBrie : Item
     {
-        public override void UpdateQuality()
+        protected override void InternalUpdateQuality()
         {
             if (Quality < MAXIMUM_QUALITY)
             {
                 Quality += 1;
-            }
-            
-            SellIn = SellIn - 1;
-
-            if (SellIn < 0)
-            {
-                if (Quality < MAXIMUM_QUALITY)
-                {
-                    Quality = Quality + 1;
-                }
             }
         }
     }
@@ -84,21 +75,27 @@
         public int SellIn { get; set; }
         public int Quality { get; set; }
 
-        public virtual void UpdateQuality()
+        public void UpdateQuality()
+        {
+            InternalUpdateQuality();
+            InternalUpdateExpiration();
+
+            if (SellIn < 0)
+            {
+                InternalUpdateQuality();
+            }
+        }
+
+        protected virtual void InternalUpdateExpiration()
+        {
+            SellIn = SellIn - 1;
+        }
+
+        protected virtual void InternalUpdateQuality()
         {
             if (Quality > 0)
             {
                 Quality -= 1;
-            }
-
-            SellIn = SellIn - 1;
-            
-            if (SellIn < 0)
-            {
-                if (Quality > 0)
-                {    
-                    Quality = Quality - 1;   
-                }
             }
         }
     }
