@@ -59,7 +59,20 @@
     {
         public override void UpdateQuality()
         {
-            base.UpdateQuality();
+            if (Quality < MAXIMUM_QUALITY)
+            {
+                Quality += 1;
+            }
+            
+            SellIn = SellIn - 1;
+
+            if (SellIn < 0)
+            {
+                if (Quality < MAXIMUM_QUALITY)
+                {
+                    Quality = Quality + 1;
+                }
+            }
         }
     }
 
