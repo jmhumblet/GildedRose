@@ -13,6 +13,14 @@
         }
     }
 
+    public class Sulfuras : Item
+    {
+        public override void UpdateQuality()
+        {
+            base.UpdateQuality();
+        }
+    }
+
     public class Item
     {
         private const int MAXIMUM_QUALITY = 50;
