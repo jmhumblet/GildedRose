@@ -17,7 +17,34 @@
     {
         public override void UpdateQuality()
         {
-            base.UpdateQuality();
+            
+            if (Quality < MAXIMUM_QUALITY)
+            {
+                Quality += 1;
+
+                if (SellIn < 6)
+                {
+                    if (Quality < MAXIMUM_QUALITY)
+                    {
+                        Quality = Quality + 1;
+                    }
+                }
+
+                if (SellIn < 11)
+                {
+                    if (Quality < MAXIMUM_QUALITY)
+                    {
+                        Quality = Quality + 1;
+                    }
+                }
+            }
+
+            SellIn = SellIn - 1;
+
+            if (SellIn < 0)
+            {
+                Quality = 0;
+            }
         }
     }
 
@@ -31,7 +58,7 @@
 
     public class Item
     {
-        private const int MAXIMUM_QUALITY = 50;
+        protected const int MAXIMUM_QUALITY = 50;
 
         public string Name { get; set; }
         public int SellIn { get; set; }
