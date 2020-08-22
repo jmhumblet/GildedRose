@@ -16,15 +16,15 @@
 
         public int CalculateQualityChange(int sellIn)
         {
-            return -rate;
+            return sellIn >= 0 ? -rate : -2 * rate;
         }
     }
 
-    public class Increasing : IQualityBehavior
+    public class BetterOncePerished : IQualityBehavior
     {
         public int CalculateQualityChange(int sellIn)
         {
-            return 1;
+            return sellIn < 0 ? 2 : 1;
         }
     }
 
@@ -47,12 +47,12 @@
 
             var increase = 1;
 
-            if (sellIn < 11)
+            if (sellIn < 10)
             {
                 increase++;
             }
 
-            if (sellIn < 6)
+            if (sellIn < 5)
             {
                 increase++;
             }

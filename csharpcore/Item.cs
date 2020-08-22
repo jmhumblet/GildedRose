@@ -28,7 +28,7 @@ namespace csharpcore
 
     public class AgedBrie : Item
     {
-        public AgedBrie() : base (new Increasing())
+        public AgedBrie() : base (new BetterOncePerished())
         {
 
         }
@@ -73,13 +73,9 @@ namespace csharpcore
 
         public void UpdateQuality()
         {
-            InternalUpdateQuality();
             UpdateExpiration();
-
-            if (SellIn < 0)
-            {
-                InternalUpdateQuality();
-            }
+            InternalUpdateQuality();
+            
         }
 
         protected void UpdateExpiration()
