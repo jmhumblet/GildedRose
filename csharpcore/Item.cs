@@ -1,5 +1,18 @@
 ﻿namespace csharpcore
 {
+    public class ConjuredManaCake : Item
+    {
+        public override void UpdateQuality()
+        {
+            if (Quality > 0)
+            {
+                Quality--;
+            }
+
+            base.UpdateQuality();
+        }
+    }
+
     public class Item
     {
         private const int MAXIMUM_QUALITY = 50;
@@ -8,16 +21,8 @@
         public int SellIn { get; set; }
         public int Quality { get; set; }
 
-        public void UpdateQuality()
+        public virtual void UpdateQuality()
         {
-            if (Name == "Conjured Mana Cake")
-            {
-                if (Quality > 0)
-                {
-                    Quality--;
-                }
-            }
-
             if (Name != "Aged Brie" && Name != "Backstage passes to a TAFKAL80ETC concert")
             {
                 if (Quality > 0)
